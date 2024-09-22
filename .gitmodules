@@ -1,0 +1,3 @@
+[submodule "Session02-Docker/emlo4-session-02-thamizhannal"]
+	path = Session02-Docker/emlo4-session-02-thamizhannal
+	url = https://github.com/The-School-of-AI/emlo4-session-02-thamizhannal.git
