@@ -7,3 +7,6 @@
 [submodule "Session03-Docker2/classwork/mnist-fastapi-compose"]
 	path = Session03-Docker2/classwork/mnist-fastapi-compose
 	url = https://github.com/satyajitghana/mnist-fastapi-compose.git
+[submodule "Session03-Docker2/assignement/emlo4-session-03-thamizhannal"]
+	path = Session03-Docker2/assignement/emlo4-session-03-thamizhannal
+	url = https://github.com/The-School-of-AI/emlo4-session-03-thamizhannal.git
