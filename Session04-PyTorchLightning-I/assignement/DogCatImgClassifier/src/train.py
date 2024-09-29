@@ -47,13 +47,16 @@ def main():
         devices=1, # if L.pytorch.utilities.device_parser.parse_gpu_ids('cpu') else None,
         logger=TensorBoardLogger("lightning_logs", name="dog_breed_classifier")
     )
+    print("Trainer initialized successfully!")
 
     # Train the model
     trainer.fit(model, datamodule=data_module)
+    print("Trainer completed!")
 
     # Test the model
     trainer.test(model, datamodule=data_module)
-
+    print("Test completed!")
+ 
     print(f"Best model path: {checkpoint_callback.best_model_path}")
 
 if __name__ == "__main__":
