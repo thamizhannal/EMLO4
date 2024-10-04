@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./src:/app/src
+      - ./checkpoints:/app/checkpoints
+      - ./lightning_logs:/app/lightning_logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    #deploy:
+    #  resources:
+    #    reservations:
+    #      devices:
+    #        - driver: nvidia
+    #          count: 1
+    #          capabilities: [gpu]
+
+  train:
+    extends:
+      service: base
+    command: python /app/src/train.py
+
+  evaluate:
+    extends:
+      service: base
+    command: python /app/src/eval.py
+
+  infer:
+    extends:
+      service: base
+    command: python /app/src/infer.py
+
+volumes:
+  data:
+  checkpoints:
+  lightning_logs:
