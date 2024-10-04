@@ -1,0 +1,16 @@
+FROM python:3.9-slim-buster AS build
+
+WORKDIR /app
+RUN apt-get update -y && apt install -y --no-install-recommends git\
+    && pip install --no-cache-dir -U pip
+
+COPY requirements.txt .
+# Create the virtual environment.
+RUN python3 -m venv /venv
+ENV PATH=/venv/bin:$PATH
+
+
+RUN pip install -r requirements.txt
+
+COPY . .
+CMD ["python", "src/inference.py", "--input_folder", "/app/data/dogs_dataset/validation", "--output_folder", "/app/output", "--ckpt_path", "/app/outputs/2024-10-03/17-20-32/checkpoints/epoch_002.ckpt"]

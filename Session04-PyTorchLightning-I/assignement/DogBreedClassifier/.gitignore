@@ -1,0 +1,6 @@
+dogs_dataset/
+# *.env
+logs/
+outputs/
+output/
+__pycache__/
