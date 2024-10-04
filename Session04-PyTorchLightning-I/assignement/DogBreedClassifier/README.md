@@ -11,7 +11,7 @@ $kaggle datasets download khushikhushikhushi/dog-breed-image-dataset
 
 ### Directory tree Structure
 ```sh.
-$ tree --dirsfirst -L 2 -a -I .git .
+$ tree 
 ├── configs
 │   ├── callbacks
 │   ├── data
@@ -450,6 +450,3 @@ Processed Rottweiler_91.jpg: Rottweiler (1.00)
 tensorboard --logdir outputs/ --load_fast=false
 ```
 
-```website
-http://localhost:6006/
-```
