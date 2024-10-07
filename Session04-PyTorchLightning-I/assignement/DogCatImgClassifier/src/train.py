@@ -9,14 +9,14 @@ def main():
     L.seed_everything(42, workers=True)
 
     # Initialize DataModule
-    data_module = DogBreedDataModule(data_dir="/app/data", batch_size=32, num_workers=2)
+    data_module = DogBreedDataModule(data_dir="/app/data", batch_size=32, num_workers=4)
     data_module.prepare_data()
-    data_module.setup()
+    data_module.setup(stage="fit")
     print("Initialize data module completed!")
 
     # Get the number of classes
-    num_classes = len(data_module.train_dataset.classes)
-    print("Num of the classes:{}", num_classes)
+    num_classes = 10 #len(data_module.train_dataset.classes)
+    print("Num of the classes:{0}".format(num_classes))
 
     # Initialize Model
     model = DogBreedClassifier(num_classes=num_classes, learning_rate=1e-3)
@@ -31,6 +31,8 @@ def main():
         monitor="val_loss",
         mode="min"
     )
+    print("checkpoint callback completed!")
+
     early_stop_callback = EarlyStopping(
         monitor="val_loss",
         min_delta=0.00,
@@ -41,24 +43,24 @@ def main():
 
     # Initialize Trainer
     trainer = L.Trainer(
-        max_epochs=30,
-        callbacks=[checkpoint_callback, early_stop_callback],
-        accelerator="cpu",
-        devices=1, # if L.pytorch.utilities.device_parser.parse_gpu_ids('cpu') else None,
-        logger=TensorBoardLogger("lightning_logs", name="dog_breed_classifier")
+        num_sanity_val_steps=0,
+        log_every_n_steps=5,
+        max_epochs=5,
+        callbacks=[checkpoint_callback],
+        accelerator="auto",
+        devices= 1, #if L.pytorch.utilities.device_parser.parse_gpu_ids('cpu') else None,
+        logger=TensorBoardLogger("dog_breed_classifier", name="dog_breed_classifier")
     )
-    print("Trainer initialized successfully!")
+    print("Initialize Trainer completed!")
 
     # Train the model
     trainer.fit(model, datamodule=data_module)
-    print("Trainer completed!")
+    print("Train.fit completed!")
 
     # Test the model
     trainer.test(model, datamodule=data_module)
-    print("Test completed!")
- 
+
     print(f"Best model path: {checkpoint_callback.best_model_path}")
 
 if __name__ == "__main__":
     main()
-
