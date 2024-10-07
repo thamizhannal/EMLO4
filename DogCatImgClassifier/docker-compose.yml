@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    shm_size: "2gb"
+    volumes:
+      - ./data:/app/data
+      - ./src:/app/src
+      - ./checkpoints:/app/checkpoints
+      - ./lightning_logs:/app/lightning_logs
+    environment:
+      - PYTHONUNBUFFERED=1
+  train:
+    extends:
+      service: base
+    command: python /app/src/train.py
+    volumes:
+      - dogbreedclassifier:/app/src
+      - checkpoints:/app/checkpoints
+      - data:/app/data    
+  
+  evaluate:
+    extends:
+      service: base
+    command: python /app/src/eval.py
+    volumes:
+      - dogbreedclassifier:/app/src
+      - checkpoints:/app/checkpoints
+      - data:/app/data
+  infer:
+    extends:
+      service: base
+    command: python /app/src/infer.py
+    volumes:
+      - dogbreedclassifier:/app/src
+      - checkpoints:/app/checkpoints
+      - output:/app/data/output
+
+volumes:
+  dogbreedclassifier:
+  data:
+  checkpoints:
+  output:
